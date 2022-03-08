@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Crypto</string>
+    <string name="chart_description">Data displayed above is indicative only. Actual execution price may vary. Past performance is not an indicator of future performance.</string>
+    <string name="status">Status</string>
+</resources>
