@@ -6,7 +6,12 @@ App to track cryptocurrencies values
 The architecture is built around
 [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/)
 and follows the recommendations laid out in the
-[Guide to App Architecture](https://developer.android.com/jetpack/docs/guide). 
+[Guide to App Architecture](https://developer.android.com/jetpack/docs/guide).
+
+<p align="center">
+<img src="https://developer.android.com/topic/libraries/architecture/images/mad-arch-overview.png" width="300"/>
+</p>
+<p align="center">Diagram of a typical app architecture.</p>
 
 ## Presentation layer
 Logic is kept away from Activities and Fragments and moved to
@@ -19,6 +24,11 @@ The [Navigation component](https://developer.android.com/guide/navigation) is us
 to implement navigation in the app, handling Composable Screens or Fragment transactions 
 and providing a consistent user experience.
 
+## Domain layer
+A lightweight domain layer sits between the data layer
+and the presentation layer, and handles discrete pieces of business logic off
+the UI thread. See the `.\*UseCase.kt` files under `/domain`.
+
 ## Data layer
 The **Repository** follows the **Facate Structural Pattern** to handle data operations. 
 Moust of the data is provided mainly from two **Data Sources**; stored with 
@@ -26,7 +36,6 @@ Moust of the data is provided mainly from two **Data Sources**; stored with
 Retrofit. The repository modules are responsible for handling all data operations 
 and abstracting the data sources from the rest of the app.
 
-## Domain layer
-A lightweight domain layer sits between the data layer
-and the presentation layer, and handles discrete pieces of business logic off
-the UI thread. See the `.\*UseCase.kt` files under `/domain`.
+## Data Sources
+All the information is provided from [coincap.io](https://api.coincap.io/) API 
+as well as the [logo images](https://assets.coincap.io/assets/icons/btc@2x.png).
