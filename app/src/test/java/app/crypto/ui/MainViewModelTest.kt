@@ -19,10 +19,17 @@ import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 
+/**
+ * Tests running under StandardTestDispatcher and UnconfinedTestDispatcher.
+ * for more info see https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-test/kotlinx.coroutines.test/-standard-test-dispatcher.html
+ * https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-test/kotlinx.coroutines.test/-unconfined-test-dispatcher.html
+ */
+
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class MainViewModelTest {
 
+    private val testDispatcher = StandardTestDispatcher()
     @Mock
     private lateinit var repository: Repository
     @Mock
@@ -32,7 +39,7 @@ class MainViewModelTest {
 
     @Before
     fun setUp() {
-        Dispatchers.setMain(StandardTestDispatcher())
+        Dispatchers.setMain(testDispatcher)
         viewModel = MainViewModel(
             repository,
             useCase,
