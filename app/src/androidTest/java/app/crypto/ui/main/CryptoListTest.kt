@@ -18,7 +18,7 @@ import org.junit.runner.RunWith
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class CryptoListKtTest {
+class CryptoListTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<MainActivity>()
@@ -61,7 +61,7 @@ class CryptoListKtTest {
         assertEquals("app.crypto", appContext.packageName)
     }
 
-    fun getCryptoAsset(): CryptoAsset {
+    private fun getCryptoAsset(): CryptoAsset {
         return CryptoAsset(
             "bitcoin",
             1,

@@ -3,7 +3,10 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'jacoco'
 }
+
+apply from: 'jacoco.gradle'
 
 android {
     compileSdk 32
@@ -26,12 +29,14 @@ android {
             debuggable true
             buildConfigField "String", 'API_URL', '"https://api.coincap.io/"'
             buildConfigField "String", 'IMAGE_URL', '"https://assets.coincap.io/assets/icons/%s@2x.png"'
+            testCoverageEnabled true
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", 'API_URL', '"https://api.coincap.io/"'
             buildConfigField "String", 'IMAGE_URL', '"https://assets.coincap.io/assets/icons/%s@2x.png"'
+            testCoverageEnabled true
         }
     }
     compileOptions {
@@ -99,9 +104,6 @@ dependencies {
 
     testImplementation "org.mockito:mockito-core:3.12.4"
     //testImplementation 'org.mockito.kotlin:mockito-kotlin:3.2.0'
-
-    // Turbine
-    // testImplementation 'app.cash.turbine:turbine:0.7.0'
 
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0"
     testImplementation 'junit:junit:4.13.2'
