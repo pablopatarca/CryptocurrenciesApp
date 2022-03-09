@@ -46,8 +46,8 @@ project.afterEvaluate {
 
                 sourceDirectories.setFrom(files([mainSrc]))
                 classDirectories.setFrom(files([mainClasses, javaClasses]))
-                //executionData.setFrom(files("${project.buildDir}/jacoco/${testTaskName}.exec"))
-                executionData.setFrom(files("${project.buildDir}/outputs/unit_test_code_coverage/debugUnitTest/${testTaskName}.exec"))
+                executionData.setFrom(files("${project.buildDir}/jacoco/${testTaskName}.exec"))
+                //executionData.setFrom(files("${project.buildDir}/outputs/unit_test_code_coverage/debugUnitTest/${testTaskName}.exec"))
 
                 reports {
                     xml.enabled = true
