@@ -25,11 +25,16 @@ project.afterEvaluate {
             }
             def testTaskName = "test${sourceName.capitalize()}UnitTest"
 
-            // Create coverage task of form 'testFlavorTypeCoverage' depending on 'testFlavorTypeUnitTest'
-            task "${testTaskName}Coverage" (type:JacocoReport, dependsOn: ["$testTaskName", "create${sourceName.capitalize()}CoverageReport"]) {
+            // Create coverage task of form 'testFlavorTypeCoverage'
+            // depending on 'testFlavorTypeUnitTest'
+            task "${testTaskName}Coverage" (
+                    type:JacocoReport,
+                    dependsOn: ["$testTaskName", "create${sourceName.capitalize()}CoverageReport"]
+            ) {
 
                 group = "Reporting"
-                description = "Generate Jacoco coverage reports on the ${sourceName.capitalize()} build."
+                description = "Generate Jacoco coverage reports on " +
+                        "the ${sourceName.capitalize()} build."
 
                 def fileFilter = ['**/R.class',
                                   '**/R$*.class',
@@ -37,22 +42,28 @@ project.afterEvaluate {
                                   '**/*$ViewBinder*.*',
                                   '**/BuildConfig.*',
                                   '**/Manifest*.*',
-                                  '**/*JsonAdapter*',
+                                  '**/*JsonAdapter*.*',
                                   '**/*_Impl*'
                 ]
-                def javaClasses = fileTree(dir: "${project.buildDir}/intermediates/javac/${sourceName}/classes/", excludes: fileFilter)
-                def mainClasses = fileTree(dir: "${project.buildDir}/tmp/kotlin-classes/${sourceName}/", excludes: fileFilter)
+                def javaClasses = fileTree(
+                        dir: "${project.buildDir}/intermediates/javac/${sourceName}/classes/",
+                        excludes: fileFilter
+                )
+                def mainClasses = fileTree(
+                        dir: "${project.buildDir}/tmp/kotlin-classes/${sourceName}/",
+                        excludes: fileFilter
+                )
                 def mainSrc = "${project.projectDir}/src/main/java"
 
                 sourceDirectories.setFrom(files([mainSrc]))
                 classDirectories.setFrom(files([mainClasses, javaClasses]))
                 executionData.setFrom(files("${project.buildDir}/jacoco/${testTaskName}.exec"))
-                //executionData.setFrom(files("${project.buildDir}/outputs/unit_test_code_coverage/debugUnitTest/${testTaskName}.exec"))
 
                 reports {
                     xml.enabled = true
                     html.enabled = true
                 }
+
                 doLast{
                     println("🥳🎉 Coverage report generated in $buildDir/reports/jacoco/")
                 }
