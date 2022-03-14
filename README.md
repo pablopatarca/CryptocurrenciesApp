@@ -1,11 +1,24 @@
 # Crypto App 🤑
-App to track cryptocurrencies values
+Crypto is an Android app to track **crypto assets values** made with **MVVM** Arch pattern, following Clean Architecture and SOLID principles, Oriented Objects and Reactive Programming paradigms and supported by using the following libraries:
+- Jetpack Compose, 
+- Dagger Hilt, 
+- Room,
+- Retrofit,
+- Kotlin Flow,
+- AnyChart,
+- Coil,
+and more...
+
+<p align="center">
+<img src="https://github.com/pablopatarca/CryptocurrenciesApp/blob/main/media_sources/demo_1.gif" width="300"/>
+</p>
+<p align="center">Crypto app.</p>
 
 # Architecture
 
 The architecture is built around
 [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/)
-and follows the recommendations laid out in the
+and follows the **MVVM** pattern and the recommendations laid out in the
 [Guide to App Architecture](https://developer.android.com/jetpack/docs/guide).
 
 <p align="center">
