@@ -11,7 +11,7 @@ fun <T> Response<T>.getNetworkResult(): Result<T> {
             NetworkException(it.string())
         )
     } ?: Failure(
-        Error("Unknown Network Error 🙉")
+        Exception("Unknown Network Error 🙉")
     )
 }
 
