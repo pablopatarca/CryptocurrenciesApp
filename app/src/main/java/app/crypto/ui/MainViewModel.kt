@@ -8,9 +8,8 @@ import app.crypto.model.AssetsListUseCase
 import app.crypto.ui.main.MainState
 import app.crypto.utils.CoroutineDispatchers
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -28,6 +27,9 @@ class MainViewModel @Inject constructor(
     val state: StateFlow<MainState> = useCase.getSortedAssets()
         .mapLatest {
             MainState(it)
+        }.catch { e ->
+            //TODO: Handle exceptions
+            _messages.emit(e.message ?: "Unknown Error 🙈")
         }.stateIn(
             viewModelScope,
             SharingStarted.Lazily,

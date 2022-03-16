@@ -31,12 +31,18 @@ class CryptoViewModel @Inject constructor(
     val state: StateFlow<CryptoAsset?> = cryptoId.mapLatest {
         val crypto = repository.getAssetById(it) ?: return@mapLatest null
         crypto.toAsset()
+    }.catch { e ->
+        //TODO: Handle exceptions
+        _messages.emit(e.message ?: "Unknown Error 🙈")
     }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     val history: StateFlow<List<PriceEntity>> = state.flatMapLatest {
         val id = it?.id ?: return@flatMapLatest flow { listOf<List<PriceEntity>>() }
         fetchInfo(id)
         repository.getHistory(id)
+    }.catch { e ->
+        //TODO: Handle exceptions
+        _messages.emit(e.message ?: "Unknown Error 🙈")
     }.stateIn(viewModelScope, SharingStarted.Lazily, listOf())
 
     fun fetchInfo(id: String){
