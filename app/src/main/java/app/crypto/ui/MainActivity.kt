@@ -15,6 +15,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.compose.rememberNavController
 import app.crypto.R
 import app.crypto.ui.theme.CryptoTheme
@@ -64,11 +66,13 @@ class MainActivity : ComponentActivity() {
                     )
                 }
                 LaunchedEffect(Unit){
-                    viewModel.messages.collect {
-                        snackbarHostState.showSnackbar(
-                            message = it,
-                            duration = SnackbarDuration.Short
-                        )
+                    repeatOnLifecycle(Lifecycle.State.STARTED){
+                        viewModel.messages.collect {
+                            snackbarHostState.showSnackbar(
+                                message = it,
+                                duration = SnackbarDuration.Short
+                            )
+                        }
                     }
                 }
             }
