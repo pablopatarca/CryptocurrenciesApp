@@ -1,5 +1,6 @@
 package app.crypto.ui
 
+import app.crypto.data.NetworkException
 import app.crypto.data.Repository
 import app.crypto.model.AssetsListUseCase
 import app.crypto.model.CryptoAsset
@@ -63,11 +64,11 @@ class MainViewModelTest {
     }
 
     @Test
-    fun `Emit a message when Repository throws an Exception`() = runTest {
+    fun `Emit a message when Repository throws an NetworkException`() = runTest {
         // Given
         val message = "Exception 💥"
         `when`(repository.fetchAssets()).thenThrow(
-            NullPointerException(message)
+            NetworkException(message)
         )
         val msgResults = mutableListOf<String>()
         val job = launch(UnconfinedTestDispatcher(testScheduler)) {
@@ -77,6 +78,7 @@ class MainViewModelTest {
         viewModel.loadCryptoList()
         runCurrent()
         // Then
+        println(msgResults)
         assert(msgResults.first() == message)
         job.cancel()
     }
@@ -86,7 +88,7 @@ class MainViewModelTest {
         // Given
         val flow = flowOf(listOf(getCryptoAsset()))
         `when`(useCase.getSortedAssets()).thenReturn(flow)
-        viewModel = MainViewModel(repository, useCase)
+        viewModel = MainViewModel(repository, useCase, TestDispatchers)
         val stateResults = mutableListOf<MainState>()
 
         // When
@@ -107,7 +109,7 @@ class MainViewModelTest {
         // Given
         val flow = flowOf(listOf(getCryptoAsset()))
         `when`(useCase.getSortedAssets()).thenReturn(flow)
-        viewModel = MainViewModel(repository, useCase)
+        viewModel = MainViewModel(repository, useCase, TestDispatchers)
         val stateResults = mutableListOf<MainState>()
 
         // When

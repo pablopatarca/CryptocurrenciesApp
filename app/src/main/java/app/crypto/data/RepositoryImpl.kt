@@ -1,6 +1,7 @@
 package app.crypto.data
 
 import kotlinx.coroutines.flow.Flow
+import java.io.IOException
 import java.math.BigDecimal
 import java.math.RoundingMode
 import javax.inject.Inject
@@ -14,19 +15,11 @@ class RepositoryImpl @Inject constructor(
         return dao.getAssets()
     }
 
-    @Throws(Exception::class)
+    @Throws(IOException::class)
     override suspend fun fetchAssets(){
-        val result = api.getAssets()
-            .getNetworkResult()
-        when(result){
-            is Success -> {
-                val list = result.data.toAssetsEntities()
-                dao.insert(list)
-            }
-            is Failure -> {
-                throw result.cause
-            }
-        }
+        val result = api.getAssets().getNetworkResult()
+        val list = result.toAssetsEntities()
+        dao.insert(list)
     }
 
     override suspend fun getAssetById(id: String): AssetEntity? {
@@ -37,19 +30,11 @@ class RepositoryImpl @Inject constructor(
         return dao.getHistory(id)
     }
 
-    @Throws(Exception::class)
+    @Throws(IOException::class)
     override suspend fun fetchHistory(id: String) {
-        val result = api.getHistory(quoteId = id)
-            .getNetworkResult()
-        when(result){
-            is Success -> {
-                val list = result.data.toPriceEntities(id)
-                dao.insertPrice(list)
-            }
-            is Failure -> {
-                throw result.cause
-            }
-        }
+        val result = api.getHistory(quoteId = id).getNetworkResult()
+        val list = result.toPriceEntities(id)
+        dao.insertPrice(list)
     }
 
     private fun AssetsListDTO.toAssetsEntities(): List<AssetEntity> {

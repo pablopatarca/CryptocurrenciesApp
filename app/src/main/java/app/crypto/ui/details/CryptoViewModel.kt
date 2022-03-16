@@ -4,11 +4,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.crypto.data.AssetEntity
+import app.crypto.data.NetworkException
 import app.crypto.data.PriceEntity
 import app.crypto.data.Repository
 import app.crypto.model.CryptoAsset
 import app.crypto.utils.CoroutineDispatchers
-import app.crypto.utils.DefaultDispatchers
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class CryptoViewModel @Inject constructor(
     private val repository: Repository,
     savedStateHandle: SavedStateHandle,
-    private val coroutineDispatchers: CoroutineDispatchers = DefaultDispatchers
+    private val coroutineDispatchers: CoroutineDispatchers
 ) : ViewModel() {
 
     private val _messages = MutableSharedFlow<String>()
@@ -43,8 +43,10 @@ class CryptoViewModel @Inject constructor(
         viewModelScope.launch(coroutineDispatchers.IO) {
             try {
                 repository.fetchHistory(id = id)
-            } catch (e: Exception){
-                _messages.emit(e.message ?: "")
+            } catch (e: NetworkException){
+                _messages.emit(e.message ?: "Network Exception 🙈")
+            } catch (t: Throwable){
+                _messages.emit(t.message ?: "Unknown Error 🙈")
             }
         }
     }

@@ -27,11 +27,13 @@ android {
     buildTypes {
         debug {
             debuggable true
+            minifyEnabled false
             buildConfigField "String", 'API_URL', '"https://api.coincap.io/"'
             buildConfigField "String", 'IMAGE_URL', '"https://assets.coincap.io/assets/icons/%s@2x.png"'
             testCoverageEnabled true
         }
         release {
+            debuggable false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", 'API_URL', '"https://api.coincap.io/"'

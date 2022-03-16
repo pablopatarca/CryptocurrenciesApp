@@ -2,11 +2,11 @@ package app.crypto.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.crypto.data.NetworkException
 import app.crypto.data.Repository
 import app.crypto.model.AssetsListUseCase
 import app.crypto.ui.main.MainState
 import app.crypto.utils.CoroutineDispatchers
-import app.crypto.utils.DefaultDispatchers
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val repository: Repository,
     useCase: AssetsListUseCase,
-    private val coroutineDispatchers: CoroutineDispatchers = DefaultDispatchers
+    private val coroutineDispatchers: CoroutineDispatchers
 ) : ViewModel() {
 
     // MutableSharedFlow to emit an state once
@@ -42,8 +42,10 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch(coroutineDispatchers.IO) {
             try {
                 repository.fetchAssets()
-            } catch (e: Exception){
-                _messages.emit(e.message ?: "Network Error 🙈")
+            } catch (e: NetworkException){
+                _messages.emit(e.message ?: "Network Exception 🙈")
+            } catch (t: Throwable){
+                _messages.emit("Unknown Error 🙈")
             }
         }
     }

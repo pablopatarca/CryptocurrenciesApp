@@ -1,18 +1,16 @@
 package app.crypto.data
 
 import retrofit2.Response
+import java.io.IOException
 
-fun <T> Response<T>.getNetworkResult(): Result<T> {
+@Throws(IOException::class)
+fun <T> Response<T>.getNetworkResult(): T {
     return body()?.let {
         println(it)
-        Success(it)
+        it
     } ?: errorBody()?.let {
-        Failure(
-            NetworkException(it.string())
-        )
-    } ?: Failure(
-        Exception("Unknown Network Error 🙉")
-    )
+        throw NetworkException(it.string())
+    } ?: throw IOException("Unknown Network Error 🙉")
 }
 
-class NetworkException(message: String): Exception(message)
+class NetworkException(message: String): IOException(message)
