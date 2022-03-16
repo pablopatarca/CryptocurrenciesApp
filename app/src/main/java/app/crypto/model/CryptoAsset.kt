@@ -1,6 +1,6 @@
 package app.crypto.model
 
-class CryptoAsset(
+data class CryptoAsset(
     val id: String,
     val rank: Int,
     val symbol: String,
