@@ -30,7 +30,9 @@ class MainViewModel @Inject constructor(
         }.catch { e ->
             //TODO: Handle exceptions
             _messages.emit(e.message ?: "Unknown Error 🙈")
-        }.stateIn(
+        }
+        .flowOn(coroutineDispatchers.IO)
+        .stateIn(
             viewModelScope,
             SharingStarted.Lazily,
             MainState(listOf())

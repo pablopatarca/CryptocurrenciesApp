@@ -34,7 +34,8 @@ class CryptoViewModel @Inject constructor(
     }.catch { e ->
         //TODO: Handle exceptions
         _messages.emit(e.message ?: "Unknown Error 🙈")
-    }.stateIn(viewModelScope, SharingStarted.Lazily, null)
+    }.flowOn(coroutineDispatchers.IO)
+    .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     val history: StateFlow<List<PriceEntity>> = state.flatMapLatest {
         val id = it?.id ?: return@flatMapLatest flow { listOf<List<PriceEntity>>() }
@@ -43,7 +44,8 @@ class CryptoViewModel @Inject constructor(
     }.catch { e ->
         //TODO: Handle exceptions
         _messages.emit(e.message ?: "Unknown Error 🙈")
-    }.stateIn(viewModelScope, SharingStarted.Lazily, listOf())
+    }.flowOn(coroutineDispatchers.IO)
+    .stateIn(viewModelScope, SharingStarted.Lazily, listOf())
 
     fun fetchInfo(id: String){
         viewModelScope.launch(coroutineDispatchers.IO) {
